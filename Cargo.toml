@@ -1,6 +1,6 @@
 [package]
 name = "simdty"
-version = "0.0.6"
+version = "0.0.7"
 authors = ["Huon Wilson <dbau.pp@gmail.com>", "Avi Weinstock <aweinstock314@gmail.com>"]
 edition = "2024"
 
