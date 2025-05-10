@@ -3,24 +3,16 @@ use std::path::Path;
 use std::fs::File;
 use std::io::prelude::*;
 
-fn simd_type(w: &mut Write, t: &str, width: u32, length: u32) {
+fn simd_type<W: Write>(w: &mut W, t: &str, width: u32, length: u32) {
     assert!(length >= 2);
     assert!(t == "f" || t == "u" || t == "i");
 
     let ty = format!("{}{}", t, width);
-    let mut contents = String::new();
-    for _ in 0..length {
-        if !contents.is_empty() { contents.push_str(", ") }
-
-        contents.push_str("pub ");
-        contents.push_str(&ty);
-    }
     writeln!(w, "\
-#[repr(C)]
 #[repr(simd)]
 #[derive(Copy, Clone, Debug)]
 /// {length} values of type {ty} in a single SIMD vector.
-pub struct {ty}x{length}({contents});", ty=ty, length=length, contents=contents).unwrap()
+pub struct {ty}x{length}(pub [{ty}; {length}]);").unwrap()
 }
 
 fn main() {
